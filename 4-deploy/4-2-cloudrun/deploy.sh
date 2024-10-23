@@ -1,0 +1,1 @@
+gcloud builds submit --project your-project-id-here --config cloud-build.yaml .

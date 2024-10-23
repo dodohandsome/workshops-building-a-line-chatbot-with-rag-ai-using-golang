@@ -1,7 +1,7 @@
 # ยินดีต้อนรับสู่ Workshop Building a LINE Chatbot with RAG AI using Golang
 
 <p align="center" width="100%">
-    <img src="./assets/welcome.jpg"> 
+    <img src="../../assets/welcome.jpg"> 
 </p>
 
 ## 🎉 แนะนำตัว
