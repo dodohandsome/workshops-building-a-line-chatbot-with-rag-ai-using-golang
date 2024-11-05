@@ -6,7 +6,7 @@
 ### 1. เริ่มต้นโปรเจ็กต์ Go Module
 ใช้คำสั่ง `go mod init` เพื่อสร้าง Go module สำหรับโปรเจ็กต์ (ตั้งชื่อ module เป็นชื่อที่เหมาะสม เช่น `my-go-project`)
 ```bash
-go mod init my-go-project
+go mod init project-rag
 ```
 
 ### ขั้นที่ 2: ติดตั้ง Dependencies

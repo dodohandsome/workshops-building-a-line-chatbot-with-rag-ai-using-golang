@@ -6,7 +6,7 @@
 ### 2. เริ่มต้นโปรเจ็กต์ Go Module
 1. ใช้คำสั่ง `go mod init` เพื่อสร้าง Go module สำหรับโปรเจ็กต์ (ตั้งชื่อ module เป็นชื่อที่เหมาะสม เช่น `my-go-project`)
 ```bash
-go mod init my-go-project
+go mod init hello-world
 ```
 
 ### 3. เขียนโปรแกรม Hello World

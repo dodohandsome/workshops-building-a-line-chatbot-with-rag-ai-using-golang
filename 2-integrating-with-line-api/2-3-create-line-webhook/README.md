@@ -8,7 +8,7 @@
 1. **เริ่มต้นโปรเจ็กต์ Go Module**
    ใช้คำสั่ง `go mod init` เพื่อสร้าง Go module สำหรับโปรเจ็กต์ (ตั้งชื่อ module เป็นชื่อที่เหมาะสม เช่น `my-go-project`)
    ```bash
-   go mod init my-go-project
+   go mod init line-webhook
    ```
 
 2. **รับคำสั่งเพื่อ Download Libery ต่างๆลงมาใช้งาน**
@@ -45,5 +45,5 @@
    ```
 6. **นำ Endpoint ไปใช้ใน LINE Messaging API**
 
-    - เมื่อ Ngrok ทำงานแล้ว จะได้ Endpoint ที่มีรูปแบบ https://xxxxxxxx.ngrok.io
+    - เมื่อ Ngrok ทำงานแล้ว จะได้ Endpoint ที่มีรูปแบบ https://xxxxxxxx.ngrok.io เทียบเท่า http://localhost:3000
     - นำ Endpoint ที่ได้ไปตั้งค่าใน LINE Developers Console โดยไปที่ Messaging API > Webhook URL และใส่ Endpoint นี้

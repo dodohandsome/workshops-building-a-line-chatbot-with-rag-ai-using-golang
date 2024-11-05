@@ -251,7 +251,7 @@ func handleWebhook(c *fiber.Ctx) error {
 // 	return reply, nil
 // }
 
-// func getTokenStatelate() (string, error) {
+// func getTokenStateless() (string, error) {
 // 	endpoint := "https://api.line.me/oauth2/v3/token"
 // 	data := map[string]string{
 // 		"grant_type":    "client_credentials",
@@ -282,7 +282,7 @@ func handleWebhook(c *fiber.Ctx) error {
 // 		messagesToSend = []interface{}{messages}
 // 	}
 
-// 	accessToken, err := getTokenStatelate()
+// 	accessToken, err := getTokenStateless()
 // 	if err != nil {
 // 		return err
 // 	}
@@ -306,7 +306,7 @@ func handleWebhook(c *fiber.Ctx) error {
 // }
 
 func loadingMessage(lineUserId string) error {
-	accessToken, err := getTokenStatelate()
+	accessToken, err := getTokenStateless()
 	if err != nil {
 		return err
 	}

@@ -127,7 +127,7 @@ func main() {
 		log.Fatalf("Failed to create IndexConnection for Host %v: %v", idxModel.Host, err)
 	}
 
-	// trainData(ctx)
+	// generateVectors(ctx)
 
 	app := fiber.New()
 	app.Use(logger.New())
@@ -359,7 +359,7 @@ func handleBeaconMessage(event Event) (interface{}, error) {
 	return reply, nil
 }
 
-func getTokenStatelate() (string, error) {
+func getTokenStateless() (string, error) {
 	endpoint := "https://api.line.me/oauth2/v3/token"
 	data := map[string]string{
 		"grant_type":    "client_credentials",
@@ -390,7 +390,7 @@ func ReplyMessage(replyToken string, messages interface{}) error {
 		messagesToSend = []interface{}{messages}
 	}
 
-	accessToken, err := getTokenStatelate()
+	accessToken, err := getTokenStateless()
 	if err != nil {
 		return err
 	}
@@ -414,7 +414,7 @@ func ReplyMessage(replyToken string, messages interface{}) error {
 }
 
 func loadingMessage(lineUserId string) error {
-	accessToken, err := getTokenStatelate()
+	accessToken, err := getTokenStateless()
 	if err != nil {
 		return err
 	}
@@ -439,7 +439,7 @@ func loadingMessage(lineUserId string) error {
 }
 
 func getProfile(userID string) (*Profile, error) {
-	accessToken, err := getTokenStatelate()
+	accessToken, err := getTokenStateless()
 	if err != nil {
 		return nil, err
 	}
@@ -536,7 +536,7 @@ func splitTextWithOverlap(text string, length int, overlap int) []string {
 	return result
 }
 
-func trainData(ctx context.Context) {
+func generateVectors(ctx context.Context) {
 
 	segmentLength := 5
 	overlap := 2
