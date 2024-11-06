@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
-	"github.com/go-resty/resty/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/joho/godotenv"
@@ -51,7 +49,6 @@ var handlers = map[string]messageHandler{
 	// "follow":   handleFollowMessage,
 	// "unfollow": handleUnfollowMessage,
 }
-var client = resty.New()
 
 func main() {
 
@@ -95,7 +92,7 @@ func handleWebhook(c *fiber.Ctx) error {
 			log.Printf("No handler found for event type: %s", typeEvent)
 			continue
 		}
-		// loadingMessage(event.Source.UserID)
+		// LoadingMessage(event.Source.UserID)
 		result, err := handler(event)
 		if err != nil {
 			log.Println("Error handling event:", err)
@@ -250,119 +247,6 @@ func handleWebhook(c *fiber.Ctx) error {
 
 // 	return reply, nil
 // }
-
-// func getTokenStateless() (string, error) {
-// 	endpoint := "https://api.line.me/oauth2/v3/token"
-// 	data := map[string]string{
-// 		"grant_type":    "client_credentials",
-// 		"client_id":     os.Getenv("CHANNEL_ID"),
-// 		"client_secret": os.Getenv("CHANNEL_SECRET"),
-// 	}
-
-// 	resp, err := postFormRequest(endpoint, data)
-// 	if err != nil {
-// 		return "", err
-// 	}
-
-// 	var result map[string]interface{}
-// 	if err := json.Unmarshal(resp, &result); err != nil {
-// 		return "", fmt.Errorf("error unmarshalling response: %v", err)
-// 	}
-
-// 	if accessToken, ok := result["access_token"].(string); ok {
-// 		return accessToken, nil
-// 	}
-
-// 	return "", fmt.Errorf("failed to get access token")
-// }
-
-// func ReplyMessage(replyToken string, messages interface{}) error {
-// 	messagesToSend, ok := messages.([]interface{})
-// 	if !ok {
-// 		messagesToSend = []interface{}{messages}
-// 	}
-
-// 	accessToken, err := getTokenStateless()
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	endpoint := "https://api.line.me/v2/bot/message/reply"
-// 	payload := map[string]interface{}{
-// 		"replyToken": replyToken,
-// 		"messages":   messagesToSend,
-// 	}
-
-// 	resp, err := postJSONRequest(endpoint, accessToken, payload)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	if resp.StatusCode() != 200 {
-// 		return fmt.Errorf("error replying message: %s", resp.String())
-// 	}
-
-// 	return nil
-// }
-
-func loadingMessage(lineUserId string) error {
-	accessToken, err := getTokenStateless()
-	if err != nil {
-		return err
-	}
-
-	endpoint := "https://api.line.me/v2/bot/chat/loading/start"
-	payload := map[string]interface{}{
-		"chatId":         lineUserId,
-		"loadingSeconds": 20,
-	}
-
-	resp, err := postJSONRequest(endpoint, accessToken, payload)
-
-	if err != nil {
-		return err
-	}
-
-	if resp.StatusCode() != 200 {
-		return fmt.Errorf("error replying message: %s", resp.String())
-	}
-
-	return nil
-}
-
-func getRequest(endpoint string, accessToken string) ([]byte, error) {
-	resp, err := client.R().
-		SetHeader("Authorization", fmt.Sprintf("Bearer %s", accessToken)).
-		Get(endpoint)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp.Body(), nil
-}
-
-func postFormRequest(endpoint string, data map[string]string) ([]byte, error) {
-	resp, err := client.R().
-		SetHeader("Content-Type", "application/x-www-form-urlencoded").
-		SetFormData(data).
-		Post(endpoint)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp.Body(), nil
-}
-
-func postJSONRequest(endpoint, accessToken string, payload interface{}) (*resty.Response, error) {
-	resp, err := client.R().
-		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", fmt.Sprintf("Bearer %s", accessToken)).
-		SetBody(payload).
-		Post(endpoint)
-
-	return resp, err
-}
 
 // loadingMessage(event.Source.UserID)
 // var result interface{}
