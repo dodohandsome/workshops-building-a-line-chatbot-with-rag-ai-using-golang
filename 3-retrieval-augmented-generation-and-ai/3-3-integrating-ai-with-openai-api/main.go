@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -115,7 +116,7 @@ func handleWebhook(c *fiber.Ctx) error {
 			continue
 		}
 		LoadingMessage(event.Source.UserID)
-		initMessages(event)
+		// initMessages(event)
 		result, err := handler(event)
 		if err != nil {
 			log.Println("Error handling event:", err)
@@ -127,21 +128,21 @@ func handleWebhook(c *fiber.Ctx) error {
 	return c.JSON(results)
 }
 
-// func initMessages(event Event) {
-// 	userID := event.Source.UserID
-// 	if _, exists := messages[userID]; !exists || len(messages[userID]) == 0 {
-// 		profile, err := GetProfile(userID)
-// 		if err != nil {
-// 			fmt.Printf("Error getting profile: %v\n", err)
-// 		}
-// 		messages[userID] = []Message{
-// 			{Role: "system", Content: "คุณชื่อลูฟี่ คุณเป็นผู้ช่วยส่วนตัวของฉัน คุณเป็นผู้เชี่ยวชาญในทุกๆ เรื่อง และคุณจะตอบฉันเป็นภาษาไทยเท่านั้น"},
-// 			{Role: "user", Content: fmt.Sprintf("ฉันมีชื่อว่า %s", profile.DisplayName)},
-// 			{Role: "assistant", Content: fmt.Sprintf("คุณชื่อ %s", profile.DisplayName)},
-// 		}
-// 	}
+func initMessages(event Event) {
+	userID := event.Source.UserID
+	if _, exists := messages[userID]; !exists || len(messages[userID]) == 0 {
+		profile, err := GetProfile(userID)
+		if err != nil {
+			fmt.Printf("Error getting profile: %v\n", err)
+		}
+		messages[userID] = []Message{
+			{Role: "system", Content: "คุณชื่อลูฟี่ คุณเป็นผู้ช่วยส่วนตัวของฉัน คุณเป็นผู้เชี่ยวชาญในทุกๆ เรื่อง และคุณจะตอบฉันเป็นภาษาไทยเท่านั้น"},
+			{Role: "user", Content: fmt.Sprintf("ฉันมีชื่อว่า %s", profile.DisplayName)},
+			{Role: "assistant", Content: fmt.Sprintf("คุณชื่อ %s", profile.DisplayName)},
+		}
+	}
 
-// }
+}
 
 func handleTextMessage(event Event) (interface{}, error) {
 	// prompt := event.Message.Text

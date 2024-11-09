@@ -95,3 +95,16 @@
         ```
    - คลิก “OK” เพื่อบันทึกและปิดหน้าต่างทั้งหมด
 4. รีสตาร์ท Command Prompt/PowerShell เพื่อให้การตั้งค่ามีผล
+
+
+
+#
+### Extensions
+
+ติดตั้ง Extentions Go ให้เรียบร้อย
+
+<p align="center" width="100%">
+    <img src="../../assets/extensions-go.png"> 
+</p>
+
+

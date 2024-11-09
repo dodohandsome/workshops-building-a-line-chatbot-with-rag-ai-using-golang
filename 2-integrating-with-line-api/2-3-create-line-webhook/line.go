@@ -1,80 +1,86 @@
 package main
 
-// func getTokenStateless() (string, error) {
-// 	endpoint := "https://api.line.me/oauth2/v3/token"
-// 	data := map[string]string{
-// 		"grant_type":    "client_credentials",
-// 		"client_id":     os.Getenv("CHANNEL_ID"),
-// 		"client_secret": os.Getenv("CHANNEL_SECRET"),
-// 	}
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
 
-// 	resp, err := PostFormRequest(endpoint, data)
-// 	if err != nil {
-// 		return "", err
-// 	}
+func getTokenStateless() (string, error) {
+	endpoint := "https://api.line.me/oauth2/v3/token"
+	data := map[string]string{
+		"grant_type":    "client_credentials",
+		"client_id":     os.Getenv("CHANNEL_ID"),
+		"client_secret": os.Getenv("CHANNEL_SECRET"),
+	}
 
-// 	var result map[string]interface{}
-// 	if err := json.Unmarshal(resp, &result); err != nil {
-// 		return "", fmt.Errorf("error unmarshalling response: %v", err)
-// 	}
+	resp, err := PostFormRequest(endpoint, data)
+	if err != nil {
+		return "", err
+	}
 
-// 	if accessToken, ok := result["access_token"].(string); ok {
-// 		return accessToken, nil
-// 	}
+	var result map[string]interface{}
+	if err := json.Unmarshal(resp, &result); err != nil {
+		return "", fmt.Errorf("error unmarshalling response: %v", err)
+	}
 
-// 	return "", fmt.Errorf("failed to get access token")
-// }
+	if accessToken, ok := result["access_token"].(string); ok {
+		return accessToken, nil
+	}
 
-// func ReplyMessage(replyToken string, messages interface{}) error {
-// 	messagesToSend, ok := messages.([]interface{})
-// 	if !ok {
-// 		messagesToSend = []interface{}{messages}
-// 	}
+	return "", fmt.Errorf("failed to get access token")
+}
 
-// 	accessToken, err := getTokenStateless()
-// 	if err != nil {
-// 		return err
-// 	}
+func ReplyMessage(replyToken string, messages interface{}) error {
+	messagesToSend, ok := messages.([]interface{})
+	if !ok {
+		messagesToSend = []interface{}{messages}
+	}
 
-// 	endpoint := "https://api.line.me/v2/bot/message/reply"
-// 	payload := map[string]interface{}{
-// 		"replyToken": replyToken,
-// 		"messages":   messagesToSend,
-// 	}
+	accessToken, err := getTokenStateless()
+	if err != nil {
+		return err
+	}
 
-// 	resp, err := PostJSONRequest(endpoint, accessToken, payload)
-// 	if err != nil {
-// 		return err
-// 	}
+	endpoint := "https://api.line.me/v2/bot/message/reply"
+	payload := map[string]interface{}{
+		"replyToken": replyToken,
+		"messages":   messagesToSend,
+	}
 
-// 	if resp.StatusCode() != 200 {
-// 		return fmt.Errorf("error replying message: %s", resp.String())
-// 	}
+	resp, err := PostJSONRequest(endpoint, accessToken, payload)
+	if err != nil {
+		return err
+	}
 
-// 	return nil
-// }
+	if resp.StatusCode() != 200 {
+		return fmt.Errorf("error replying message: %s", resp.String())
+	}
 
-// func LoadingMessage(lineUserId string) error {
-// 	accessToken, err := getTokenStateless()
-// 	if err != nil {
-// 		return err
-// 	}
+	return nil
+}
 
-// 	endpoint := "https://api.line.me/v2/bot/chat/loading/start"
-// 	payload := map[string]interface{}{
-// 		"chatId":         lineUserId,
-// 		"loadingSeconds": 20,
-// 	}
+func LoadingMessage(lineUserId string) error {
+	accessToken, err := getTokenStateless()
+	if err != nil {
+		return err
+	}
 
-// 	resp, err := PostJSONRequest(endpoint, accessToken, payload)
+	endpoint := "https://api.line.me/v2/bot/chat/loading/start"
+	payload := map[string]interface{}{
+		"chatId":         lineUserId,
+		"loadingSeconds": 20,
+	}
 
-// 	if err != nil {
-// 		return err
-// 	}
+	resp, err := PostJSONRequest(endpoint, accessToken, payload)
 
-// 	if resp.StatusCode() != 200 {
-// 		return fmt.Errorf("error replying message: %s", resp.String())
-// 	}
+	if err != nil {
+		return err
+	}
 
-// 	return nil
-// }
+	if resp.StatusCode() != 200 {
+		return fmt.Errorf("error replying message: %s", resp.String())
+	}
+
+	return nil
+}
